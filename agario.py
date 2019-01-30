@@ -30,6 +30,7 @@ turtle.register_shape('gameover1.gif')
 
 my_ball = Ball (0,0,5,-5,50,"blue")
 other_player_ball = Ball (0,0,5,-5,50,"deep pink")
+other_player_ball.hideturtle()
 
 BALLS = []
 	
@@ -48,6 +49,7 @@ for i in range (number_of_balls):
 
 
 def move_all_balls():
+	other_player_ball.move(screen_width,screen_height)
 	for i in BALLS:
 		i.move(screen_width,screen_height)
 def collied(balla,ballb):
@@ -65,6 +67,7 @@ def check_all_balls_collisions():
 	global running
 	all_balls = []
 	all_balls.append(my_ball)
+	all_balls.append(other_player_ball)
 	for ball in BALLS:
 		all_balls.append(ball)
 
@@ -108,6 +111,25 @@ def check_all_balls_collisions():
 						ballb.new_Ball(x,y,dx,dy,r,color)
 						balla.r=balla.r +8
 						balla.shapesize(balla.r/10)
+def up():
+	print("UP!!!")
+	other_player_ball.dy=5
+
+turtle.onkey(up, "Up")
+def down():
+	print("DOWN!!!")
+	other_player_ball.dy=-5
+turtle.onkey(down,"Down")
+def right():
+	other_player_ball.dx=5
+turtle.onkey(right,"Right")
+def left():
+	other_player_ball.dx=-5
+turtle.onkey(left,"Left")
+	
+turtle.listen()
+
+
 
 
 def movearound(screen_width, screen_height):
@@ -115,10 +137,17 @@ def movearound(screen_width, screen_height):
 	curso_y=screen_height - turtle.getcanvas().winfo_pointery()
 	my_ball.goto(curso_x,curso_y)
 
+#function for party mode
+	#shows the other ball
+	#call thw play button function
+def party(x,y):
+	other_player_ball.showturtle()
+	play_button(23,35)
+
+
 def play_button(x,y):
-	print("HELLO")
-	play.ht()
 	global running,screen_height,screen_width
+	party_mode.ht()
 	for i in BALLS:
 		i.showturtle()
 	
@@ -141,14 +170,19 @@ def play_button(x,y):
 play = turtle.clone()
 party_mode = turtle.clone()	
 play.showturtle()
+
+party_mode.goto(0,-screen_height/2)
 party_mode.showturtle()
 turtle.register_shape('playy.gif')
+turtle.register_shape('2player.gif')
 play.shape("playy.gif")
+party_mode.shape("2player.gif")
 #party_mode.shape("button.gif")
 #party_mode.shapesize(10)
 #party_mode.color("blue")
 turtle.update()
 play.onclick(play_button)
+party_mode.onclick(party)
 
 turtle.mainloop()
 
